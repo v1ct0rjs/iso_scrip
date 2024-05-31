@@ -1,9 +1,6 @@
-# iso_shell_script
-Repositorio para la asignatura de Implantación de sistemas operativos
-
 # README.md
 
-Script creado para la Tercera evalucación de la asignatura de Implantación de sistemas operativos.
+Script creado para la tercera evaluación de la asignatura de Implantación de sistemas operativos.
 Escrito en bash por Víctor Manuel Jiménez Sánchez.
 IES Suarez de Figueroa, Zafra, Badajoz.
 
