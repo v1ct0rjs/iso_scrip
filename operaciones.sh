@@ -8,6 +8,10 @@ function crear_usuario() {
     read nombre_usuario                                                     # Guardamos el nombre del usuario en la variable nombre_usuario
     sudo useradd $nombre_usuario                                            # Creamos el usuario con el nombre introducido
     echo "Se ha creado el usuario "$nombre_usuario" correctamente."         # Mostramos un mensaje de confirmación
+    echo "Introduzca la contraseña para el usuario: "                       # Pedimos la contraseña del usuario
+    read -s password                                                        # Guardamos la contraseña del usuario en la variable password
+    echo $password | sudo passwd --stdin $nombre_usuario                    # Asignamos la contraseña al usuario
+    echo "Se ha asignado la contraseña al usuario "$nombre_usuario" correctamente." # Mostramos un mensaje de confirmación
     echo
     echo "Pulse una tecla para continuar..."
     read -n 1
