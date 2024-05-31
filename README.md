@@ -3,6 +3,21 @@ Repositorio para la asignatura de Implantación de sistemas operativos
 
 # README.md
 
+Script creado para la Tercera evalucación de la asignatura de Implantación de sistemas operativos.
+Escrito en bash por Víctor Manuel Jiménez Sánchez.
+IES Suarez de Figueroa, Zafra, Badajoz.
+
+Aquí adjunto la explicación del funcionamiento de mi script de bash. Esté escrip está subid a mi repositorio de GitHub, 
+en la siguiente dirección: https://github.com/v1ct0rjs/iso_shell_scripts
+
+El motivo de subir este scrips es para poder compartirlo en mi portfolio personal 
+https://v1ct0r.dev/ y para poder tenerlo disponible en cualquier momento, para hacerle mejoras o para poder consultarlo.
+
+
+## Clona el repositorio
+```bash
+$ git clone git@github.com:v1ct0rjs/iso_shell_scripts.git
+```
 ## Introducción
 
 Este repositorio contiene un conjunto de scripts de shell para la gestión de usuarios y grupos en un sistema Linux. Los scripts están diseñados para ser fáciles de usar, con un sistema de menús claro que guía al usuario a través de las opciones disponibles.
@@ -43,10 +58,10 @@ Aquí hay un ejemplo de cómo se podría usar este script en un terminal de Linu
 
 ```bash
 # Otorga permisos de ejecución al script main.sh
-chmod +x main.sh
+$ chmod +x main.sh
 
 # Ejecuta el script
-./main.sh
+$ ./main.sh
 ```
 
 Una vez que el script se está ejecutando, se presentará un menú con varias opciones. Cada opción corresponde a una función específica definida en `operaciones.sh`. Aquí hay un ejemplo de cómo se vería este menú:
