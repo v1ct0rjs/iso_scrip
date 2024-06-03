@@ -1,82 +1,102 @@
 #!/bin/bash
 
-# Funcion para crear un usuario
 function menu() {
-    while true                                                          # Bucle para mostrar el menú
+    while true
     do
-        clear                                                           # Limpiamos la pantalla
-        echo
-        echo "Bienvenido al script de gestión de usuarios y grupos"
-        echo "----------------------------------------------------"
-        echo
-        echo "Menú de opciones:"
-        echo "1. Crear un usuario nuevo"
-        echo "2. Crear un grupo nuevo"
-        echo "3. Agregar un usuario existente a un grupo existente"
-        echo "4. Agregar un usuario existente a un grupo no existente"
-        echo "5. Eliminar un usuario de un grupo"
-        echo "6. Mostrar el listado de usuarios de un grupo específico"
-        echo "7. Mostrar todos los grupos existentes en el sistema"
-        echo "8. Eliminar Usuario"
-        echo "9. Salir del script"
-        echo
-        echo "Por favor, seleccione una opción: "
-        read opcion
-        case $opcion in                                                   # Switch para seleccionar una opción
-            1)
-                crear_usuario                                             # Llamamos a la función crear_usuario
-                ;;
-            2)
-                crear_grupo                                               # Llamamos a la función crear_grupo
-                ;;
-            3)
-                agregar_usuario_grupo                                      # Llamamos a la función agregar_usuario_grupo
-                ;;
-            4)
-                agregar_usuario_grupo_no_existente
-                ;;
-            5)
-                borra_usuario_grupo                                         # Llamamos a la función borra_usuario_grupo
-                ;;
-            6)
-                lista_usuarios_grupo                                        # Llamamos a la función lista_usuarios_grupo
-                ;;
-            7)
-                lista_grupos                                                # Llamamos a la función lista_grupos
-                ;;
-            8)
-                eliminar_usuario                                            # Llamamos a la función eliminar usuario
-                ;;
-            9)
-                echo "Saliendo del script..."                               # Salimos del script
-                exit 0
-                ;;
-            *)                                                              # Opción por defecto
-                echo "Opción inválida. Por favor, seleccione una opción válida." # Mensaje de error si la opción no es válida
-                echo
-                echo "Pulse una tecla para continuar..."
-                read -n 1
-                ;;
-        esac
+        clear
+        exec 3>&1
+        opcion=$(dialog --clear \
+                --backtitle "Gestión de usuarios y grupos" \
+                --title "Menú Principal" \
+                --radiolist "Seleccione una opción:" 20 70 9 \
+                    "1" "Crear un usuario nuevo" off \
+                    "2" "Crear un grupo nuevo" off \
+                    "3" "Agregar un usuario existente a un grupo existente" off \
+                    "4" "Agregar un usuario existente a un grupo no existente" off \
+                    "5" "Eliminar un usuario de un grupo" off \
+                    "6" "Mostrar el listado de usuarios de un grupo específico" off \
+                    "7" "Mostrar todos los grupos existentes en el sistema" off \
+                    "8" "Eliminar Usuario" off \
+                    "9" "Salir del script" off \
+                2>&1 1>&3)
+        exit_status=$?
+        exec 3>&-
+        if [ $exit_status = 0 ]; then
+            case $opcion in
+                1)
+                    crear_usuario
+                    ;;
+                2)
+                    crear_grupo
+                    ;;
+                3)
+                    agregar_usuario_grupo
+                    ;;
+                4)
+                    agregar_usuario_grupo_no_existente
+                    ;;
+                5)
+                    borra_usuario_grupo
+                    ;;
+                6)
+                    lista_usuarios_grupo
+                    ;;
+                7)
+                    lista_grupos
+                    ;;
+                8)
+                    eliminar_usuario
+                    ;;
+                9)
+                    echo "Saliendo del script..."
+                    exit 0
+                    ;;
+                *)
+                    echo "Opción inválida. Por favor, seleccione una opción válida."
+                    echo
+                    echo "Pulse una tecla para continuar..."
+                    read -n 1
+                    ;;
+            esac
+        else
+            echo "Saliendo del script..."
+            exit 0
+        fi
     done
 }
 
-function main() {
-    source operaciones.sh # Importamos el script operaciones.sh
-    clear
-    echo
-    echo          # Mostramos un mensaje de bienvenida
-    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    echo "+                                                   +"
-    echo "+          Examen Practico 3º Evaluación            +"
-    echo "+             IES Suarez de Figueroa                +"
-    echo "+              Autor: Víctor Jiménez                +"
-    echo "+                                                   +"
-    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    echo
-    echo "Pulse una tecla para continuar..."
-    read -n 1
-    menu # Llamamos a la función menu
+function install_dialog() {
+    if ! command -v dialog &> /dev/null; then
+        echo "dialog no está instalado. Intentando instalar..."
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            case $ID in
+                debian|ubuntu|devuan)
+                    sudo apt-get install -y dialog
+                    ;;
+                centos|fedora|rhel)
+                    sudo yum install -y dialog
+                    ;;
+                arch|manjaro)
+                    sudo pacman -Syu --noconfirm dialog
+                    ;;
+                *)
+                    echo "Distribución no soportada. Por favor, instala dialog manualmente."
+                    ;;
+            esac
+        else
+            echo "No se pudo detectar la distribución. Por favor, instala dialog manualmente."
+        fi
+    fi
 }
 
-main # Llamamos a la función main
+function main() {
+    install_dialog
+    source operaciones.sh
+    clear
+    dialog --title "Bienvenido" \
+       --msgbox "Gestión de usuarios y grupos" 10 60
+    menu
+}
+
+main

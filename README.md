@@ -45,6 +45,8 @@ El script `operaciones.sh` contiene las siguientes funciones:
 
 - `lista_grupos`: Esta función lista todos los grupos en el sistema.
 
+- `eliminar_usuario`: Esta función elimina un usuario. Pide el nombre del usuario a eliminar, luego pregunta al usuario si está seguro de que desea eliminar el usuario y, si la respuesta es afirmativa, elimina el usuario.
+
 ## Uso
 
 Este apartado se refiere a cómo se deben utilizar los scripts proporcionados en el repositorio. En este caso, los scripts son `main.sh` y `operaciones.sh`.
