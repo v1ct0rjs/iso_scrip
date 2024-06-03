@@ -71,7 +71,7 @@ function install_dialog() {
         if [ -f /etc/os-release ]; then
             . /etc/os-release
             case $ID in
-                debian|ubuntu|devuan)
+                debian|ubuntu)
                     sudo apt-get install -y dialog
                     ;;
                 centos|fedora|rhel)
