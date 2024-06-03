@@ -17,7 +17,8 @@ function menu() {
         echo "5. Eliminar un usuario de un grupo"
         echo "6. Mostrar el listado de usuarios de un grupo específico"
         echo "7. Mostrar todos los grupos existentes en el sistema"
-        echo "8. Salir del script"
+        echo "8. Eliminar Usuario"
+        echo "9. Salir del script"
         echo
         echo "Por favor, seleccione una opción: "
         read opcion
@@ -44,11 +45,17 @@ function menu() {
                 lista_grupos                                                # Llamamos a la función lista_grupos
                 ;;
             8)
+                eliminar_usuario                                            # Llamamos a la función eliminar usuario
+                ;;
+            9)
                 echo "Saliendo del script..."                               # Salimos del script
                 exit 0
                 ;;
-            *)
+            *)                                                              # Opción por defecto
                 echo "Opción inválida. Por favor, seleccione una opción válida." # Mensaje de error si la opción no es válida
+                echo
+                echo "Pulse una tecla para continuar..."
+                read -n 1
                 ;;
         esac
     done

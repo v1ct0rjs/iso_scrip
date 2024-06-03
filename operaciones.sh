@@ -10,7 +10,7 @@ function crear_usuario() {
     echo "Se ha creado el usuario "$nombre_usuario" correctamente."         # Mostramos un mensaje de confirmación
     echo "Introduzca la contraseña para el usuario: "                       # Pedimos la contraseña del usuario
     read -s password                                                        # Guardamos la contraseña del usuario en la variable password
-    echo $password | sudo passwd --stdin $nombre_usuario                    # Asignamos la contraseña al usuario
+    echo $password | sudo passwd --stdin $nombre_usuario                    # Asignamos la contraseña al usuario passwd --stdin entrada estanda lee la clave desde la variable
     echo "Se ha asignado la contraseña al usuario "$nombre_usuario" correctamente." # Mostramos un mensaje de confirmación
     echo
     echo "Pulse una tecla para continuar..."
@@ -119,7 +119,7 @@ function borra_usuario_grupo() {
         break                                                                 # Si el grupo existe, salimos del bucle
     done
 
-    sudo gpasswd -d $nombre_usuario $nombre_grupo                             # Eliminamos el usuario del grupo
+    sudo deluser $nombre_usuario $nombre_grupo                                # Eliminamos el usuario del grupo
     echo "Usuario eliminado del grupo correctamente."                         # Mostramos un mensaje de confirmación
     echo
     echo "Pulse una tecla para continuar..."
@@ -154,4 +154,37 @@ function lista_grupos() {
     echo
     echo "Pulse una tecla para continuar..."
     read -n 1
+}
+
+# Funcion para eliminar un usuario Modificación práctica
+function eliminar_usuario() {
+    clear
+    while true; do
+        echo "Introduzca el nombre del usuario a eliminar: "                        # Pedimo el usuario a borrar y lo almacenamos en una variable
+        read nombre_usuario
+        if [ $(cat /etc/passwd | grep $nombre_usuario | wc -l) -eq 0 ]; then        # Comprobamos si el usuario existe
+            echo "El usuario no existe."
+            echo
+            echo "Pulse una tecla para continuar..."
+            read -n 1
+            continue                                                                # Si no existe, continuamos con el bucle
+        fi
+        break                                                                       # Si el usuario existe, salimos del bucle
+    done
+    echo "Información de " $nombre_usuario "en /etc/password"                       # Mostramos la información del usuario
+    grep "^$nombre_usuario:" /etc/passwd | cut -d: -f1-5                            # usamos grep para buscar el usuario y cut para mostrar los campos
+    echo
+    echo "Pulse una tecla para continuar..."
+    read -n 1
+    echo "¿Está seguro de que desea eliminar el usuario $nombre_usuario? (s/n)"     # Preguntamos si está seguro de eliminar el usuario
+    read respuesta
+    if [ $respuesta = "s" ]; then                                                   # Si la respuesta es afirmativa, eliminamos el usuario
+        sudo userdel -r $nombre_usuario                                             # Eliminamos el usuario
+        echo "Usuario eliminado correctamente."
+    else
+        echo "Operación cancelada."                                                 # Si la respuesta es negativa, mostramos un mensaje de cancelación
+    fi
+    echo
+    echo "Pulse una tecla para continuar..."                                        # Pedimos que pulse una tecla para continuar
+    read -n 1                                                                       # Leemos la tecla pulsada
 }
